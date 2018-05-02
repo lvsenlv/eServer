@@ -1,0 +1,24 @@
+TARGET_BASE_NAME    = eTools
+CC                  = gcc
+LIBS                = -static -lpthread 
+CFLAGS              = -g -Wall -Wno-unused-function -Werror
+SRC_DIR             = ../src
+OBJ_DIR             = ./object_eTools
+LIB_DIR             = ../lib
+OBJS                = common.o crc.o hex_str_to_dec.o eTools.o
+DEF                 = -D__LINUX -D__64BIT -D__SERVER -D__DEBUG -D__LOG_CLEAR -D__CRC16 -D__CRC32 
+INC                 = -I../include 
+TARGET              = $(TARGET_BASE_NAME)
+
+$(shell mkdir -p $(OBJ_DIR))
+
+all : $(TARGET) 
+
+$(TARGET) : $(OBJS)
+	$(CC) $(wildcard $(OBJ_DIR)/*.o) -o $@ $(LIBS)
+
+%.o : $(SRC_DIR)/%.c
+	$(CC) -c $<  -o $(OBJ_DIR)/$@ $(DEF) $(INC) $(CFLAGS) 
+
+clean :
+	rm -rf $(TARGET_DIR) $(OBJ_DIR) $(TARGET_BASE_NAME)* *log* 
